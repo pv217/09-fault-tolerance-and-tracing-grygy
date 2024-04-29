@@ -95,6 +95,12 @@ public class FlightService {
      */
     @WithTransaction
     // TODO add CircuitBreaker with requestVolumeThreshold = 4, failureRatio = 0.75, delay = 1000, successThreshold = 2
+    @CircuitBreaker(
+            requestVolumeThreshold = 4,
+            failureRatio = 0.75,
+            delay = 1000,
+            successThreshold = 2
+    )
     public Uni<Boolean> cancelFlight(Long id) {
         return flightRepository.changeStatus(id, FlightStatus.CANCELLED)
                 .onItem().transformToUni(ignored ->
